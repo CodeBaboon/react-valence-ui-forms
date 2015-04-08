@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Brightspace/react-valence-ui-forms",
   "dependencies": {
     "classnames": "^1.2.0",
+    "object-assign": "^2.0.0",
     "q": "^1.2.0",
     "react": "^0.12.2",
     "react-frau-events": "0.0.1",

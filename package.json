@@ -1,0 +1,48 @@
+{
+  "name": "react-vui-forms",
+  "version": "0.0.1",
+  "description": "React component for forms inlcuding validation",
+  "main": "lib/index.js",
+  "scripts": {
+    "less": "lessc lib/forms.less > lib/forms.css",
+    "build": "npm run less",
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brightspace/react-valence-ui-forms.git"
+  },
+  "keywords": [
+    "d2l",
+    "valence-ui",
+    "vui",
+    "react",
+    "forms",
+    "validation"
+  ],
+  "author": "D2L Corporation",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Brightspace/react-valence-ui-forms/issues"
+  },
+  "homepage": "https://github.com/Brightspace/react-valence-ui-forms",
+  "dependencies": {
+    "classnames": "^1.2.0",
+    "q": "^1.2.0",
+    "react": "^0.12.2",
+    "react-frau-events": "0.0.1",
+    "vui-validation": "0.0.2"
+  },
+  "devDependencies": {
+    "jest-cli": "^0.2.2",
+    "react-tools": "^0.12.2",
+    "less": "^2.3.1"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "testDirectoryName": "test",
+    "unmockedModulePathPatterns": [
+      "react"
+    ]
+  }
+}

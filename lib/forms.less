@@ -1,2 +1,19 @@
 
 @import "node_modules/vui-validation/validation.less";
+
+.field-interacted.field-invalid input,
+.field-interacted.field-invalid input[type=text] {
+	#vui.Validation.invalid();
+};
+
+.field-bubble {
+	#vui.Validation.Bubble();
+}
+
+.field-bubble-content {
+	#vui.Validation.BubbleContent();
+}
+
+.field-bubble-show {
+	#vui.Validation.Bubble.show();
+}

@@ -54,9 +54,7 @@ render: function() {
           Name
           <Forms.Input
             type="text"
-            validators={
-                Forms.Validators.required('Name is a required')
-            } />
+            validators={ Forms.Validators.required('Name is a required') } />
      </label>;
 }
 ```
@@ -73,7 +71,10 @@ render: function() {
           <Forms.Input type="text"
             validators={[
                 Forms.Validators.required('Name is a required'),
-                Forms.Validators.patternMatch(/SomeName/, 'SomeName is the only acceptable name.')
+                Forms.Validators.patternMatch(
+                    /SomeName/,
+                    'SomeName is the only acceptable name.'
+                )
             ]} />
      </label>;
 }
@@ -81,18 +82,18 @@ render: function() {
 
 ### Triggering Validation
 
-Validation can be triggered on a component by calling the validate function on the component. For example:
+Validation will be done when a field loses focus, however it can be manually trigger on a component (ex. Input, Form, etc.) by calling the validate function. For example:
 
 ```javascript
 ...
 render: function() {
-     return <div>
+     return <Forms.Form ref="myForm">
         <label>
             Name
-            <Forms.Input ref="userName" ... />
+            <Forms.Input ... />
         </label>
-        <button type="button" onClick={this.refs.userName.validate}>Validate</button>
-     </div>;
+        <button type="button" onClick={this.refs.myForm.validate}>Validate</button>
+     </Forms.Form>;
 }
 ```
 
@@ -106,7 +107,7 @@ Provide a message that will be displayed when a value has not be specified.
 var validator = Forms.Validators.required('Name is a required');
 ```
 
-Optionally specify how whitespace should be handled when validating.
+Optionally specify how whitespace should be handled (TRIM vs KEEP) when validating.
 
 ```javascript
 var validator = Forms.Validators.required(

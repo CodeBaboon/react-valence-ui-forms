@@ -6,7 +6,7 @@
   "scripts": {
     "less": "lessc lib/forms.less > lib/forms.css",
     "build": "npm run less",
-    "test": "exit 0"
+    "test": "npm run build && jest"
   },
   "repository": {
     "type": "git",

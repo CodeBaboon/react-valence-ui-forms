@@ -13,7 +13,7 @@ Install from NPM:
 npm install react-vui-forms
 ```
 
-## Usage
+## Components
 
 Require the components:
 ```javascript
@@ -22,9 +22,30 @@ var Forms = require('react-vui-forms');
 
 Note: you'll need to include forms.css in order for the fields and validation bubbles to be styled/displayed.
 
+```javascript
+...
+render: function() {
+    return <Forms.Form>
+        <label>Name
+            <Forms.Input type="text" ... />
+        </label>
+        <label>Type
+            <Forms.Select ... >
+                <option>...</option>
+            </Forms.Select>
+        </label>
+        <label>About
+            <Forms.Textarea ... />
+        </label>
+    </Forms.Form>;
+}
+```
+
+## Validation
+
 ### Input With a Single Validator
 
-Use the Form.Input component and provide a validator.
+Assign a validator function to the validators property.
 
 ```javascript
 ...
@@ -42,7 +63,7 @@ render: function() {
 
 ### Input With Multiple Validators
 
-Use the Form.Input component and provide an array of validators.
+Assign an array of validator functions to the validators property.
 
 ```javascript
 ...
@@ -77,20 +98,27 @@ render: function() {
 
 ### Built-in Validators
 
-Forms.Validators.required - can be used to validate that a field contains a value. Initialize like this:
+#### Forms.Validators.required
+
+Provide a message that will be displayed when a value has not be specified.
 
 ```javascript
-// provide a message that will be displayed when a value has not be specified
 var validator = Forms.Validators.required('Name is a required');
+```
 
-// optionally specify that whitespace should be trimmed before validating
+Optionally specify how whitespace should be handled when validating.
+
+```javascript
 var validator = Forms.Validators.required(
     'Name is a required', {
         whitespace: Forms.Validators.whitespaceOptions.TRIM
-});
+    }
+);
 ```
 
-Forms.Validators.patternMatch - can be used to validate using a regular expression. Initialize like this:
+#### Forms.Validators.patternMatch
+
+Provide a regular expression and a message to be displayed when the value is invalid.
 
 ```javascript
 var validator = Forms.Validators.patternMatch(
@@ -99,7 +127,9 @@ var validator = Forms.Validators.patternMatch(
 );
 ```
 
-Forms.Validators.invalidValue - can be used to indicate an invalid value. This can be useful if a value is known to be invalid, perhaps after an attempt to save. Initialize like this:
+#### Forms.Validators.invalidValue
+
+Create a validator for a known invalid value by specifying the invalid value and a message to be displayed when the value matches that value.
 
 ```javascript
 var validator = Forms.Validators.invalidValue(

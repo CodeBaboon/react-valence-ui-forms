@@ -20,25 +20,27 @@ Require the components:
 var Forms = require('react-vui-forms');
 ```
 
-Note: you'll need to include forms.css in order for the fields and validation bubbles to be styled/displayed.
+Note: you'll need to include ***forms.css*** in order for the fields and validation bubbles to be styled/displayed.
 
 ```javascript
 ...
-render: function() {
-    return <Forms.Form>
-        <label>Name
-            <Forms.Input type="text" ... />
-        </label>
-        <label>Type
-            <Forms.Select ... >
-                <option>...</option>
-            </Forms.Select>
-        </label>
-        <label>About
-            <Forms.Textarea ... />
-        </label>
-    </Forms.Form>;
-}
+var MyComponent = React.createClass({
+    render: function() {
+        return <Forms.Form>
+            <label>Name
+                <Forms.Input type="text" ... />
+            </label>
+            <label>Type
+                <Forms.Select ... >
+                    <option>...</option>
+                </Forms.Select>
+            </label>
+            <label>About
+                <Forms.Textarea ... />
+            </label>
+        </Forms.Form>;
+    }
+});
 ```
 
 ## Validation
@@ -48,15 +50,15 @@ render: function() {
 Assign a validator function to the validators property.
 
 ```javascript
-...
-render: function() {
-     return <label>
-          Name
-          <Forms.Input
-            type="text"
-            validators={ Forms.Validators.required('Name is a required') } />
-     </label>;
-}
+var MyComponent = React.createClass({
+    render: function() {
+        return <label>
+            Name
+            <Forms.Input type="text"
+                validators={ Forms.Validators.required('Name is a required') } />
+        </label>;
+    }
+});
 ```
 
 ### Input With Multiple Validators
@@ -64,20 +66,21 @@ render: function() {
 Assign an array of validator functions to the validators property.
 
 ```javascript
-...
-render: function() {
-     return <label>
-          Name
-          <Forms.Input type="text"
-            validators={[
-                Forms.Validators.required('Name is a required'),
-                Forms.Validators.patternMatch(
-                    /SomeName/,
-                    'SomeName is the only acceptable name.'
-                )
-            ]} />
-     </label>;
-}
+var MyComponent = React.createClass({
+    render: function() {
+        return <label>
+            Name
+            <Forms.Input type="text"
+                validators={[
+                    Forms.Validators.required('Name is a required'),
+                    Forms.Validators.patternMatch(
+                        /SomeName/,
+                        'SomeName is the only acceptable name.'
+                    )
+                ]} />
+        </label>;
+    }
+});
 ```
 
 ### Triggering Validation
@@ -85,16 +88,16 @@ render: function() {
 Validation will be done when a field loses focus, however it can be manually trigger on a component (ex. Input, Form, etc.) by calling the validate function. For example:
 
 ```javascript
-...
-render: function() {
-     return <Forms.Form ref="myForm">
-        <label>
-            Name
-            <Forms.Input ... />
-        </label>
-        <button type="button" onClick={this.refs.myForm.validate}>Validate</button>
-     </Forms.Form>;
-}
+var MyComponent = React.createClass({
+    render: function() {
+        return <Forms.Form ref="myForm">
+            <label>Name
+                <Forms.Input ... />
+            </label>
+            <button type="button" onClick={this.refs.myForm.validate}>Validate</button>
+        </Forms.Form>;
+    }
+});
 ```
 
 ### Built-in Validators
@@ -144,13 +147,13 @@ var validator = Forms.Validators.invalidValue(
 HTML5 constraints can be used for validation, however note that they are not supported in all browsers. If used, the message provided by the user-agent is displayed in the validation bubble (and may or may not be informative to users with assisitive technology such as screen readers).
 
 ```javascript
-...
-render: function() {
-     return <label>
-          Name
-          <Forms.Input type="text" required />
-     </label>;
-}
+var MyComponent = React.createClass({
+    render: function() {
+        return <label>Name
+            <Forms.Input type="text" required />
+        </label>;
+    }
+});
 ```
 
 ### Custom Validators

@@ -106,7 +106,7 @@ var MyComponent = React.createClass({
 Provide a message that will be displayed when a value has not be specified.
 
 ```javascript
-var validator = Forms.Validators.required('Name is a required');
+var validator = Forms.Validators.required('Name is required.');
 ```
 
 Optionally specify how whitespace should be handled (TRIM vs KEEP) when validating.
@@ -143,7 +143,7 @@ var validator = Forms.Validators.invalidValue(
 
 ### HTML5 Constraints
 
-HTML5 constraints can be used for validation, however note that they are not supported in all browsers. If used, the message provided by the user-agent is displayed in the validation bubble (and may or may not be informative to users with assisitive technology such as screen readers).
+HTML5 constraints can be used for validation, however they are not supported in all browsers so you may prefer to use your own validators. If used, the message provided by the user-agent is displayed in the validation bubble (and may or may not be informative to users with assisitive technology such as screen readers).
 
 ```javascript
 var MyComponent = React.createClass({
@@ -158,6 +158,13 @@ var MyComponent = React.createClass({
 ### Custom Validators
 
 Custom validators must return an object with the isValid and optionally a message (if invalid) properties:
+
+```javascript
+{
+    isValid: true/false,
+    message: "specify a bubble message when isValid is false"
+}
+```
 
 #### Custom Synchronous Validators
 

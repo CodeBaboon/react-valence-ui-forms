@@ -157,7 +157,9 @@ var MyComponent = React.createClass({
 
 ### Custom Validators
 
-Custom validators must return an object with the isValid and optionally a message (if invalid) properties:
+A custom validator is a function that accepts the ***component*** and ***value*** arguments respectively. The ***component*** is the instance of the React component being validated, and the ***value*** corresponds to the current value of the element.
+
+The validator can return either a result, or a promise for a result. The result must be a JavaScript object containing the ***isValid*** and optionally ***message*** (if invalid) properties.
 
 ```javascript
 {

@@ -23,7 +23,6 @@ var Forms = require('react-vui-forms');
 Note: you'll need to include ***forms.css*** in order for the fields and validation bubbles to be styled/displayed.
 
 ```javascript
-...
 var MyComponent = React.createClass({
     render: function() {
         return <Forms.Form>

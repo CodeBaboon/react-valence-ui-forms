@@ -1,11 +1,11 @@
 {
   "name": "react-vui-forms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React component for forms inlcuding validation",
   "main": "lib/index.js",
   "scripts": {
-    "less": "lessc lib/forms.less > lib/forms.css",
-    "build": "npm run less",
+    "build:sass": "node-sass --output-style expanded lib/forms.scss lib/forms.css",
+    "build": "npm run build:sass",
     "test": "npm run build && jest"
   },
   "repository": {
@@ -32,12 +32,12 @@
     "q": "^1.2.0",
     "react": "^0.12.2",
     "react-frau-events": "^0.0.1",
-    "vui-validation": "^0.0.2"
+    "vui-validation": "^0.2.1"
   },
   "devDependencies": {
     "jest-cli": "^0.2.2",
-    "react-tools": "^0.12.2",
-    "less": "^2.3.1"
+    "node-sass": "^3.1.2",
+    "react-tools": "^0.12.2"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",

@@ -1,0 +1,21 @@
+
+@import "node_modules/vui-validation/validation.scss";
+
+.field-interacted.field-invalid input,
+.field-interacted.field-invalid input[type=text],
+.field-interacted.field-invalid select,
+.field-interacted.field-invalid textarea {
+	@include vui-validation-invalid;
+};
+
+.field-bubble {
+	@include vui-validation-bubble;
+}
+
+.field-bubble-content {
+	@include vui-validation-bubble-content;
+}
+
+.field-bubble-show {
+	@include vui-validation-bubble-show;
+}

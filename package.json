@@ -4,8 +4,8 @@
   "description": "React component for forms inlcuding validation",
   "main": "lib/index.js",
   "scripts": {
-    "build:sass": "node-sass --output-style expanded lib/forms.scss lib/forms.css",
-    "build": "npm run build:sass",
+    "build:css": "node-sass --output-style expanded lib/forms.scss lib/forms.css",
+    "build": "npm run build:css",
     "test": "npm run build && jest"
   },
   "repository": {

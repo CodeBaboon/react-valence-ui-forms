@@ -35,7 +35,7 @@ describe('textarea', function() {
 				<Validation.Textarea defaultValue={"some content"} />
 			);
 
-			expect(textarea.getDOMNode().firstChild.textContent).toBe('some content');
+			expect(textarea.getDOMNode().firstChild.textContent.replace('\n', '')).toBe('some content');
 
 		});
 

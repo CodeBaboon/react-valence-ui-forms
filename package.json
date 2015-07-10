@@ -1,6 +1,6 @@
 {
   "name": "react-vui-forms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React component for forms inlcuding validation",
   "main": "lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "q": "^1.2.0",
     "react": "^0.13.3",
     "react-frau-events": "^0.1.0",
-    "vui-validation": "^0.2.4"
+    "vui-validation": "^0.3.0"
   },
   "devDependencies": {
     "jest-cli": "^0.4.15",

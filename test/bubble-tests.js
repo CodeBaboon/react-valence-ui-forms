@@ -29,27 +29,7 @@ describe('bubble', function() {
 			<Validation.Bubble message="The bubble message."/>
 		);
 
-		expect(bubble.getDOMNode().className).toBe('field-bubble');
-
-	});
-
-	it('does not have the aria alert role when not visible', function() {
-
-		var bubble = TestUtils.renderIntoDocument(
-			<Validation.Bubble message="The bubble message."/>
-		);
-
-		expect(bubble.getDOMNode().getAttribute('role')).not.toBe('alert');
-
-	});
-
-	it('has the aria alert role when visible', function() {
-
-		var bubble = TestUtils.renderIntoDocument(
-			<Validation.Bubble isVisible={true} message="The bubble message."/>
-		);
-
-		expect(bubble.getDOMNode().getAttribute('role')).toBe('alert');
+		expect(bubble.getDOMNode().className).toBe('field-bubble field-bubble-hidden');
 
 	});
 

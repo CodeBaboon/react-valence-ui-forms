@@ -16,6 +16,20 @@
 	@include vui-validation-bubble-content;
 }
 
+.field-bubble-hidden {
+	display: block;
+	position: absolute;
+	left: -10000px;
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+
+	[dir="rtl"] & {
+		left: auto;
+		right: -10000px;
+	}
+}
+
 .field-bubble-show {
 	@include vui-validation-bubble-show;
 }

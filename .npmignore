@@ -5,6 +5,7 @@
 .gitignore
 .npmignore
 .travis.yml
+bower_components
 node_modules
 test
 preprocessor.js

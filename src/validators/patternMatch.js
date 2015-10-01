@@ -1,7 +1,7 @@
 'use strict';
 
 var patternMatchValidator = function(pattern, message) {
-	if(pattern === undefined) {
+	if (pattern === undefined) {
 		return function() {
 			return {isValid: true};
 		};

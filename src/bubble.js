@@ -11,7 +11,7 @@ var Bubble = React.createClass({
 			'id': this.props.id,
 			className: classNames({
 				'field-bubble': true,
-				'field-bubble-hidden': !this.props.isVisible && this.props.message,  
+				'field-bubble-hidden': !this.props.isVisible && this.props.message,
 				'field-bubble-show': this.props.isVisible
 			})
 		};

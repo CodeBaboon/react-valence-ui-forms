@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../lib/textarea');
+jest.dontMock('../src/textarea');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../lib/index');
+	Validation = require('../index');
 
 describe('textarea', function() {
 

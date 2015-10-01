@@ -1,11 +1,11 @@
 'use strict';
 
-jest.dontMock('../../lib/validators/required');
-jest.dontMock('../../lib/validators/whitespaceOptions');
+jest.dontMock('../../src/validators/required');
+jest.dontMock('../../src/validators/whitespaceOptions');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../../lib/index');
+	Validation = require('../../index');
 
 describe('required validator', function() {
 

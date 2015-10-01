@@ -1,11 +1,11 @@
 'use strict';
 
-jest.dontMock('../lib/mixin');
+jest.dontMock('../src/mixin');
 jest.dontMock('q');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../lib/index')
+	Validation = require('../index'),
 	Q = require('q');
 
 var Input = React.createClass({

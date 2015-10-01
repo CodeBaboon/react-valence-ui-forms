@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../../lib/validators/invalidValue');
+jest.dontMock('../../src/validators/invalidValue');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../../lib/index');
+	Validation = require('../../index');
 
 describe('invalidValue validator', function() {
 

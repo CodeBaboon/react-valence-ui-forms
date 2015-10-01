@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../../lib/validators/patternMatch');
+jest.dontMock('../../src/validators/patternMatch');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../../lib/index');
+	Validation = require('../../index');
 
 describe('patternMatch validator', function() {
 

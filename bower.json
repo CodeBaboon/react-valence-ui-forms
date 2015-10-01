@@ -1,0 +1,19 @@
+{
+  "name": "react-vui-forms",
+  "main": "index.js", 
+  "license": "Apache-2.0",
+  "ignore": [
+    "test",
+    ".csslintrc",
+    ".editorconfig",
+    ".eslintrc",
+    ".gitattributes",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "package.json"
+  ],
+  "dependencies": {
+    "vui-validation": "^0.3.1"
+  }
+}

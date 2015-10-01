@@ -1,11 +1,13 @@
 language: node_js
 node_js:
-- '0.10'
+- 4.1
+after_success:
+- npm run report-coverage
 deploy:
   provider: npm
   email: d2ltravisdeploy@d2l.com
   api_key:
-    secure: DPWcfmOdIWImvbeqBlMLF7X7MP9x9GTyo6tWHW/UglL02evGB4oeAROOkNkSE2ylYKigLn1dY+yrMXdTkQxRtVJw+1n/Mzy762O3RsKidC7NQVEvFabRCR9Y3h6mcD3fw6dAD1/5xUiBCyFFBbgWIOdgGuE0JtTMMJ9kRmRAxr8=
+    secure: WNvNWBzkka32hF4OC8vV4prJgIc5JGlL8Dv7sS7pjh5gGhAvSHDRQF3xFUFEvzd65hEEuvFNV6enuxDDwSs7nc1rV/47i4qAl5lMtZE8PgK3uyG0XC39T6mH/Vkr6TIgqEkMJtZZiuaL616wVFI2EWPmY/RzVUR8OPVVcsKdAns=
   on:
     tags: true
     all_branches: true

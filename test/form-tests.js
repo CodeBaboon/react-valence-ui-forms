@@ -1,12 +1,12 @@
 'use strict';
 
-jest.dontMock('../lib/form');
-jest.dontMock('../lib/input');
+jest.dontMock('../src/form');
+jest.dontMock('../src/input');
 jest.dontMock('q');
 
 var React = require('react/addons'),
 	TestUtils = React.addons.TestUtils,
-	Validation = require('../lib/index'),
+	Validation = require('../index'),
 	Q = require('q');
 
 describe('form', function() {

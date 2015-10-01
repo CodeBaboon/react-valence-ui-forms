@@ -36,13 +36,13 @@ var Form = React.createClass({
 	validate: function() {
 		return this.emitValidate(this).then(function(results) {
 
-			if (!results || results.length===0) {
+			if (!results || results.length === 0) {
 				return true;
 			}
 
 			var isValid = true, isFocusApplied;
 
-			for(var i=0; i<results.length; i++) {
+			for (var i = 0; i < results.length; i++) {
 				var result = results[i];
 				if (result.value && !result.value.isValid) {
 					isValid = false;

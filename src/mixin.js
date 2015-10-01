@@ -20,8 +20,8 @@ var ValidationMixin = {
 
 	getInitialState: function() {
 		return {
-			"validation:hasInteracted": false,
-			"validation:isValid": true
+			'validation:hasInteracted': false,
+			'validation:isValid': true
 		};
 	},
 
@@ -39,8 +39,8 @@ var ValidationMixin = {
 		this.forceUpdate();
 		var promise = this.validate().then(function(result) {
 			this.setState({
-				"validation:hasInteracted": true,
-				"validation:isValid": result.isValid
+				'validation:hasInteracted': true,
+				'validation:isValid': result.isValid
 			});
 			return result;
 		}.bind(this));
@@ -55,7 +55,7 @@ var ValidationMixin = {
 		if (this.props.validateLive) {
 			promise = this.validate().then(function(result) {
 				this.setState({
-					"validation:isValid": result.isValid
+					'validation:isValid': result.isValid
 				});
 				return result;
 			}.bind(this));
@@ -77,7 +77,7 @@ var ValidationMixin = {
 		if (this.props.validateLive && this.state['validation:hasInteracted']) {
 			this.validate().then(function(result) {
 				this.setState({
-					"validation:isValid": result.isValid
+					'validation:isValid': result.isValid
 				});
 			}.bind(this));
 		}
@@ -88,8 +88,8 @@ var ValidationMixin = {
 
 	isAncestor: function(ancestorNode, node) {
 		var currentNode = node;
-		while(currentNode) {
-			if(currentNode === ancestorNode) {
+		while (currentNode) {
+			if (currentNode === ancestorNode) {
 				return true;
 			}
 			currentNode = currentNode.parentNode;
@@ -114,7 +114,7 @@ var ValidationMixin = {
 			Bubble,
 			{
 				id: this.getValidationMessageId(),
-				key: "bubble",
+				key: 'bubble',
 				message: this.state['validation:message'],
 				isVisible: this.shouldDisplayMessage()
 			}
@@ -131,7 +131,7 @@ var ValidationMixin = {
 		var	deferred = Q.defer();
 
 		if (validator === undefined || validator === null) {
-			deferred.resolve({ isValid: true, message: "No validator."});
+			deferred.resolve({ isValid: true, message: 'No validator.'});
 			return deferred.promise;
 		}
 
@@ -159,13 +159,13 @@ var ValidationMixin = {
 	handleValidators: function(validators) {
 
 		var promises = [];
-		for(var i=0; i<validators.length; i++) {
+		for (var i = 0; i < validators.length; i++) {
 			promises.push(this.handleValidator(validators[i]));
 		}
 
 		return Q.allSettled(promises).then(function(validatorResults) {
 			var isValid = true, message;
-			for(var i=0; i<validatorResults.length; i++) {
+			for (var i = 0; i < validatorResults.length; i++) {
 				if (!validatorResults[i].value.isValid) {
 					isValid = false;
 					message = validatorResults[i].value.message;
@@ -182,7 +182,7 @@ var ValidationMixin = {
 		if (!relatedComponent ||
 			!relatedComponent.isMounted() ||
 			!this.isMounted() ||
-			!this.isAncestor(relatedComponent.getDOMNode(),this.getDOMNode())) {
+			!this.isAncestor(relatedComponent.getDOMNode(), this.getDOMNode())) {
 			return;
 		}
 
@@ -192,9 +192,9 @@ var ValidationMixin = {
 		var handleResult = function(result) {
 			result.component = this;
 			this.setState({
-				"validation:hasInteracted": true,
-				"validation:isValid": result.isValid,
-				"validation:message": result.message
+				'validation:hasInteracted': true,
+				'validation:isValid': result.isValid,
+				'validation:message': result.message
 			});
 			deferred.resolve(result);
 		}.bind(this);

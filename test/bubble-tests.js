@@ -1,6 +1,6 @@
 'use strict';
 
-jest.dontMock('../lib/bubble');
+jest.dontMock('../src/bubble');
 
 describe('bubble', function() {
 
@@ -9,7 +9,7 @@ describe('bubble', function() {
 	beforeEach(function() {
 		React = require( 'react/addons' );
 		TestUtils = React.addons.TestUtils;
-		Validation = require('../lib/index');
+		Validation = require('../index');
 	});
 
 

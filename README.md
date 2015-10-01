@@ -2,6 +2,7 @@
 
 [![NPM version][npm-image]][npm-url]
 [![Build status][ci-image]][ci-url]
+[![Coverage Status][coverage-image]][coverage-url]
 [![Dependency Status][dependencies-image]][dependencies-url]
 
 React component for forms with input validation.
@@ -13,7 +14,20 @@ Install from NPM:
 npm install react-vui-forms
 ```
 
+Install from Bower:
+```shell
+bower install react-vui-forms
+```
+
 ## Components
+
+Import the style:
+
+```javascript
+@import "bower_components/react-vui-forms/forms"; // or...
+
+@import "node_modules/react-vui-forms/forms";
+```
 
 Require the components:
 ```javascript
@@ -207,6 +221,7 @@ This repository is configured with [EditorConfig](http://editorconfig.org) rules
 [npm-image]: https://img.shields.io/npm/v/react-vui-forms.svg
 [ci-url]: https://travis-ci.org/Brightspace/react-valence-ui-forms
 [ci-image]: https://img.shields.io/travis-ci/Brightspace/react-valence-ui-forms.svg
+[coverage-url]: https://coveralls.io/r/Brightspace/react-valence-ui-forms?branch=master
+[coverage-image]: https://img.shields.io/coveralls/Brightspace/react-valence-ui-forms.svg
 [dependencies-url]: https://david-dm.org/brightspace/react-valence-ui-forms
 [dependencies-image]: https://img.shields.io/david/Brightspace/react-valence-ui-forms.svg
-

@@ -11,8 +11,7 @@
     ".gitignore",
     ".npmignore",
     ".travis.yml",
-    "package.json",
-    "preprocessor.js"
+    "package.json"
   ],
   "dependencies": {
     "vui-validation": "^0.3.1"

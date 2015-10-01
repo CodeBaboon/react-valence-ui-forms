@@ -6,6 +6,6 @@
 .npmignore
 .travis.yml
 bower_components
+coverage
 node_modules
 test
-preprocessor.js

@@ -6,9 +6,10 @@
   "scripts": {
     "build:css": "node-sass --output-style expanded src/forms.scss src/forms.css",
     "build": "npm run build:css",
+    "test:lint:css": "csslint ./src/*.css",
     "test:lint:js": "eslint --ext .js --ext .jsx ./src",
     "test:unit": "jest",
-    "test": "npm run build && npm run test:lint:js && npm run test:unit"
+    "test": "npm run build && npm run test:lint:css && npm run test:lint:js && npm run test:unit"
   },
   "repository": {
     "type": "git",
@@ -28,19 +29,23 @@
     "url": "https://github.com/Brightspace/react-valence-ui-forms/issues"
   },
   "homepage": "https://github.com/Brightspace/react-valence-ui-forms",
+  "peerDependencies": {
+    "react": "^0.13.3"
+  },
   "dependencies": {
     "classnames": "^2.1.3",
-    "eslint": "^1.2.0",
-    "eslint-config-brightspace": "^0.0.2",
     "object-assign": "^4.0.1",
     "q": "^1.2.0",
-    "react": "^0.13.3",
     "react-frau-events": "^0.1.0",
     "vui-validation": "^0.3.0"
   },
   "devDependencies": {
+    "csslint": "^0.10.0",
+    "eslint": "^1.2.0",
+    "eslint-config-brightspace": "^0.0.2",
     "jest-cli": "^0.5.8",
     "node-sass": "^3.3.3",
+    "react": "^0.13.3",
     "react-tools": "^0.13.3"
   },
   "jest": {

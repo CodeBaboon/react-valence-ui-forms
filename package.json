@@ -1,13 +1,13 @@
 {
   "name": "react-vui-forms",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React component for forms inlcuding validation",
   "main": "index.js",
   "scripts": {
     "prebuild": "npm run clean -s",
     "build:js": "browserify -d -x react -s react-vui-forms ./index.js | exorcist ./dist/react-vui-forms.js.map > ./dist/react-vui-forms.js && npm run build:js:min",
     "build:js:min": "uglifyjs ./dist/react-vui-forms.js -o ./dist/react-vui-forms.min.js --source-map ./dist/react-vui-forms.min.js.map --in-source-map ./dist/react-vui-forms.js.map",
-    "build:css": "node-sass --output-style expanded forms.scss dist/forms.css",    
+    "build:css": "node-sass --output-style expanded forms.scss dist/forms.css",
     "build": "npm run build:css && npm run build:js",
     "clean": "rimraf dist && mkdir dist && rimraf test/coverage",
     "postinstall": "bower install",

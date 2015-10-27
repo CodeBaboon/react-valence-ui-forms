@@ -411,12 +411,14 @@ process.umask = function() { return 0; };
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
+/* global define */
 
 (function () {
 	'use strict';
 
-	function classNames () {
+	var hasOwn = {}.hasOwnProperty;
 
+	function classNames () {
 		var classes = '';
 
 		for (var i = 0; i < arguments.length; i++) {
@@ -425,15 +427,13 @@ process.umask = function() { return 0; };
 
 			var argType = typeof arg;
 
-			if ('string' === argType || 'number' === argType) {
+			if (argType === 'string' || argType === 'number') {
 				classes += ' ' + arg;
-
 			} else if (Array.isArray(arg)) {
 				classes += ' ' + classNames.apply(null, arg);
-
-			} else if ('object' === argType) {
+			} else if (argType === 'object') {
 				for (var key in arg) {
-					if (arg.hasOwnProperty(key) && arg[key]) {
+					if (hasOwn.call(arg, key) && arg[key]) {
 						classes += ' ' + key;
 					}
 				}
@@ -445,15 +445,14 @@ process.umask = function() { return 0; };
 
 	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = classNames;
-	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd){
-		// AMD. Register as an anonymous module.
-		define(function () {
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', function () {
 			return classNames;
 		});
 	} else {
 		window.classNames = classNames;
 	}
-
 }());
 
 },{}],5:[function(require,module,exports){
@@ -2618,12 +2617,11 @@ module.exports.ForEvent = require('./for-event');
 'use strict';
 
 var classNames = require('classnames'),
-    React = require('react');
+	React = require('react');
 
 var Bubble = React.createClass({
-	displayName: 'Bubble',
 
-	render: function render() {
+	render: function() {
 
 		var bubbleProps = {
 			'id': this.props.id,
@@ -2634,7 +2632,14 @@ var Bubble = React.createClass({
 			})
 		};
 
-		return React.DOM.div(bubbleProps, React.DOM.span({ className: 'field-bubble-content' }, this.props.message));
+		return React.DOM.div(
+			bubbleProps,
+			React.DOM.span(
+				{ className: 'field-bubble-content' },
+				this.props.message
+			)
+		);
+
 	}
 });
 
@@ -2644,44 +2649,46 @@ module.exports = Bubble;
 'use strict';
 
 var objectAssign = require('object-assign'),
-    React = require('react'),
-    ValidationMixin = require('./mixin');
+	React = require('react'),
+	ValidationMixin = require('./mixin');
 
 var Form = React.createClass({
-	displayName: 'Form',
 
 	mixins: [ValidationMixin],
 
-	render: function render() {
+	render: function() {
 
-		return React.DOM.form(objectAssign({ noValidate: true }, this.props), this.props.children);
+		return React.DOM.form(
+			objectAssign({ noValidate: true }, this.props),
+			this.props.children
+		);
+
 	},
 
-	submit: function submit() {
-		this.validate().then((function (isValid) {
+	submit: function() {
+		this.validate().then(function(isValid) {
 			if (!isValid) {
 				return;
 			}
 			this.getDOMNode().submit();
-		}).bind(this)).done();
+		}.bind(this)).done();
 	},
 
-	tryFocus: function tryFocus(component) {
+	tryFocus: function(component) {
 		if (!component || !component.tryFocus) {
 			return false;
 		}
 		return component.tryFocus();
 	},
 
-	validate: function validate() {
-		return this.emitValidate(this).then((function (results) {
+	validate: function() {
+		return this.emitValidate(this).then(function(results) {
 
 			if (!results || results.length === 0) {
 				return true;
 			}
 
-			var isValid = true,
-			    isFocusApplied;
+			var isValid = true, isFocusApplied;
 
 			for (var i = 0; i < results.length; i++) {
 				var result = results[i];
@@ -2695,7 +2702,8 @@ var Form = React.createClass({
 			}
 
 			return isValid;
-		}).bind(this));
+
+		}.bind(this));
 	}
 
 });
@@ -2706,15 +2714,14 @@ module.exports = Form;
 'use strict';
 
 var objectAssign = require('object-assign'),
-    React = require('react'),
-    ValidationMixin = require('./mixin');
+	React = require('react'),
+	ValidationMixin = require('./mixin');
 
 var Input = React.createClass({
-	displayName: 'Input',
 
 	mixins: [ValidationMixin],
 
-	defaultValidate: function defaultValidate() {
+	defaultValidate: function() {
 		var inputNode = this.getDOMNode().firstChild;
 		if (!inputNode.checkValidity) {
 			return { isValid: true };
@@ -2725,21 +2732,21 @@ var Input = React.createClass({
 		};
 	},
 
-	getValue: function getValue() {
+	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
 		return this.getDOMNode().firstChild.value;
 	},
 
-	hasFocus: function hasFocus() {
+	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return document.activeElement === this.getDOMNode().firstChild;
+		return (document.activeElement === this.getDOMNode().firstChild);
 	},
 
-	render: function render() {
+	render: function() {
 
 		var ariaProps = {};
 
@@ -2752,14 +2759,23 @@ var Input = React.createClass({
 			ariaProps['aria-required'] = true;
 		}
 
-		return this.renderContainer(React.DOM.input(objectAssign({}, this.props, ariaProps, {
-			onFocus: this.handleFocus,
-			onBlur: this.handleBlur,
-			onKeyUp: this.handleKeyUp
-		})));
+		return this.renderContainer(
+			React.DOM.input(
+				objectAssign(
+					{},
+					this.props,
+					ariaProps, {
+						onFocus: this.handleFocus,
+						onBlur: this.handleBlur,
+						onKeyUp: this.handleKeyUp
+					}
+				)
+			)
+		);
+
 	},
 
-	tryFocus: function tryFocus() {
+	tryFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
@@ -2767,7 +2783,7 @@ var Input = React.createClass({
 		return true;
 	},
 
-	validate: function validate() {
+	validate: function() {
 		return this.onValidate(this);
 	}
 
@@ -2779,29 +2795,31 @@ module.exports = Input;
 'use strict';
 
 var classNames = require('classnames'),
-    React = require('react'),
-    Emitter = require('react-frau-events'),
-    Bubble = require('./bubble'),
-    Q = require('q');
+	React = require('react'),
+	Emitter = require('react-frau-events'),
+	Bubble = require('./bubble'),
+	Q = require('q');
 
 var validationMessageIndex = 0;
 
 var ValidationMixin = {
 
-	mixins: [Emitter.ForEvent('validate')],
+	mixins: [
+		Emitter.ForEvent('validate')
+	],
 
 	propsTypes: {
 		validateLive: React.PropTypes.bool
 	},
 
-	getInitialState: function getInitialState() {
+	getInitialState: function() {
 		return {
 			'validation:hasInteracted': false,
 			'validation:isValid': true
 		};
 	},
 
-	getValidationMessageId: function getValidationMessageId() {
+	getValidationMessageId: function() {
 		if (this.validationMessageId) {
 			return this.validationMessageId;
 		}
@@ -2811,30 +2829,30 @@ var ValidationMixin = {
 		return this.validationMessageId;
 	},
 
-	handleBlur: function handleBlur(e) {
+	handleBlur: function(e) {
 		this.forceUpdate();
-		var promise = this.validate().then((function (result) {
+		var promise = this.validate().then(function(result) {
 			this.setState({
 				'validation:hasInteracted': true,
 				'validation:isValid': result.isValid
 			});
 			return result;
-		}).bind(this));
+		}.bind(this));
 		if (this.props.onBlur) {
 			this.props.onBlur(e);
 		}
 		return promise;
 	},
 
-	handleChange: function handleChange(e) {
+	handleChange: function(e) {
 		var promise;
 		if (this.props.validateLive) {
-			promise = this.validate().then((function (result) {
+			promise = this.validate().then(function(result) {
 				this.setState({
 					'validation:isValid': result.isValid
 				});
 				return result;
-			}).bind(this));
+			}.bind(this));
 		}
 		if (this.props.onChange) {
 			this.props.onChange(e);
@@ -2842,27 +2860,27 @@ var ValidationMixin = {
 		return promise;
 	},
 
-	handleFocus: function handleFocus(e) {
+	handleFocus: function(e) {
 		this.forceUpdate();
 		if (this.props.onFocus) {
 			this.props.onFocus(e);
 		}
 	},
 
-	handleKeyUp: function handleKeyUp(e) {
+	handleKeyUp: function(e) {
 		if (this.props.validateLive && this.state['validation:hasInteracted']) {
-			this.validate().then((function (result) {
+			this.validate().then(function(result) {
 				this.setState({
 					'validation:isValid': result.isValid
 				});
-			}).bind(this));
+			}.bind(this));
 		}
 		if (this.props.onKeyUp) {
 			this.props.onKeyUp(e);
 		}
 	},
 
-	isAncestor: function isAncestor(ancestorNode, node) {
+	isAncestor: function(ancestorNode, node) {
 		var currentNode = node;
 		while (currentNode) {
 			if (currentNode === ancestorNode) {
@@ -2873,32 +2891,41 @@ var ValidationMixin = {
 		return false;
 	},
 
-	shouldDisplayMessage: function shouldDisplayMessage() {
-		return !this.state['validation:isValid'] && this.state['validation:hasInteracted'] && this.hasFocus && this.hasFocus();
+	shouldDisplayMessage: function() {
+		return !this.state['validation:isValid'] &&
+			this.state['validation:hasInteracted'] &&
+			this.hasFocus && this.hasFocus();
 	},
 
-	renderContainer: function renderContainer(innerView) {
+	renderContainer: function(innerView) {
 
 		var classes = classNames({
 			'field-interacted': this.state['validation:hasInteracted'],
 			'field-invalid': !this.state['validation:isValid']
 		});
 
-		var bubble = React.createElement(Bubble, {
-			id: this.getValidationMessageId(),
-			key: 'bubble',
-			message: this.state['validation:message'],
-			isVisible: this.shouldDisplayMessage()
-		});
+		var bubble = React.createElement(
+			Bubble,
+			{
+				id: this.getValidationMessageId(),
+				key: 'bubble',
+				message: this.state['validation:message'],
+				isVisible: this.shouldDisplayMessage()
+			}
+		);
 
-		return React.DOM.div({ className: classes }, [innerView, bubble]);
+		return React.DOM.div(
+			{ className: classes },
+			[ innerView, bubble ]
+		);
+
 	},
 
-	handleValidator: function handleValidator(validator) {
-		var deferred = Q.defer();
+	handleValidator: function(validator) {
+		var	deferred = Q.defer();
 
 		if (validator === undefined || validator === null) {
-			deferred.resolve({ isValid: true, message: 'No validator.' });
+			deferred.resolve({ isValid: true, message: 'No validator.'});
 			return deferred.promise;
 		}
 
@@ -2913,24 +2940,25 @@ var ValidationMixin = {
 			// validationResult could be a validation result result or a promise
 			// for a validation result... either we can resolve with it
 			deferred.resolve(validatorResult);
+
 		} else if (validator.constructor === Object) {
 
 			deferred.resolve(validator);
+
 		}
 
 		return deferred.promise;
 	},
 
-	handleValidators: function handleValidators(validators) {
+	handleValidators: function(validators) {
 
 		var promises = [];
 		for (var i = 0; i < validators.length; i++) {
 			promises.push(this.handleValidator(validators[i]));
 		}
 
-		return Q.allSettled(promises).then(function (validatorResults) {
-			var isValid = true,
-			    message;
+		return Q.allSettled(promises).then(function(validatorResults) {
+			var isValid = true, message;
 			for (var i = 0; i < validatorResults.length; i++) {
 				if (!validatorResults[i].value.isValid) {
 					isValid = false;
@@ -2938,20 +2966,24 @@ var ValidationMixin = {
 					break;
 				}
 			}
-			return { isValid: isValid, message: message };
+			return {isValid: isValid, message: message};
 		});
+
 	},
 
-	onValidate: function onValidate(relatedComponent) {
+	onValidate: function(relatedComponent) {
 
-		if (!relatedComponent || !relatedComponent.isMounted() || !this.isMounted() || !this.isAncestor(relatedComponent.getDOMNode(), this.getDOMNode())) {
+		if (!relatedComponent ||
+			!relatedComponent.isMounted() ||
+			!this.isMounted() ||
+			!this.isAncestor(relatedComponent.getDOMNode(), this.getDOMNode())) {
 			return;
 		}
 
-		var deferred = Q.defer();
+		var	deferred = Q.defer();
 		var validators = this.props.validators;
 
-		var handleResult = (function (result) {
+		var handleResult = function(result) {
 			result.component = this;
 			this.setState({
 				'validation:hasInteracted': true,
@@ -2959,7 +2991,7 @@ var ValidationMixin = {
 				'validation:message': result.message
 			});
 			deferred.resolve(result);
-		}).bind(this);
+		}.bind(this);
 
 		if (this.defaultValidate) {
 			var defaultResult = this.defaultValidate();
@@ -2978,14 +3010,17 @@ var ValidationMixin = {
 				validatorHandler = this.handleValidator;
 			}
 
-			validatorHandler(validators).then(function (validatorResult) {
-				handleResult(validatorResult);
-			});
+			validatorHandler(validators)
+				.then(function(validatorResult) {
+					handleResult(validatorResult);
+				});
+
 		} else {
-			handleResult({ isValid: true });
+			handleResult({isValid: true});
 		}
 
 		return deferred.promise;
+
 	}
 
 };
@@ -2996,29 +3031,28 @@ module.exports = ValidationMixin;
 'use strict';
 
 var objectAssign = require('object-assign'),
-    React = require('react'),
-    ValidationMixin = require('./mixin');
+	React = require('react'),
+	ValidationMixin = require('./mixin');
 
 var Select = React.createClass({
-	displayName: 'Select',
 
 	mixins: [ValidationMixin],
 
-	getValue: function getValue() {
+	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
 		return this.getDOMNode().firstChild.value;
 	},
 
-	hasFocus: function hasFocus() {
+	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return document.activeElement === this.getDOMNode().firstChild;
+		return (document.activeElement === this.getDOMNode().firstChild);
 	},
 
-	render: function render() {
+	render: function() {
 
 		var ariaProps = {};
 
@@ -3027,13 +3061,23 @@ var Select = React.createClass({
 			ariaProps['aria-describedby'] = this.getValidationMessageId();
 		}
 
-		return this.renderContainer(React.DOM.select(objectAssign({}, this.props, ariaProps, {
-			onFocus: this.handleFocus,
-			onBlur: this.handleBlur
-		}), this.props.children));
+		return this.renderContainer(
+			React.DOM.select(
+				objectAssign(
+					{},
+					this.props,
+					ariaProps, {
+						onFocus: this.handleFocus,
+						onBlur: this.handleBlur
+					}
+				),
+				this.props.children
+			)
+		);
+
 	},
 
-	tryFocus: function tryFocus() {
+	tryFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
@@ -3041,7 +3085,7 @@ var Select = React.createClass({
 		return true;
 	},
 
-	validate: function validate() {
+	validate: function() {
 		return this.onValidate(this);
 	}
 
@@ -3053,15 +3097,14 @@ module.exports = Select;
 'use strict';
 
 var objectAssign = require('object-assign'),
-    React = require('react'),
-    ValidationMixin = require('./mixin');
+	React = require('react'),
+	ValidationMixin = require('./mixin');
 
 var Textarea = React.createClass({
-	displayName: 'Textarea',
 
 	mixins: [ValidationMixin],
 
-	defaultValidate: function defaultValidate() {
+	defaultValidate: function() {
 		var textareaNode = this.getDOMNode().firstChild;
 		if (!textareaNode.checkValidity) {
 			return { isValid: true };
@@ -3072,21 +3115,21 @@ var Textarea = React.createClass({
 		};
 	},
 
-	getValue: function getValue() {
+	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
 		return this.getDOMNode().firstChild.value;
 	},
 
-	hasFocus: function hasFocus() {
+	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return document.activeElement === this.getDOMNode().firstChild;
+		return (document.activeElement === this.getDOMNode().firstChild);
 	},
 
-	render: function render() {
+	render: function() {
 
 		var ariaProps = {};
 
@@ -3099,14 +3142,24 @@ var Textarea = React.createClass({
 			ariaProps['aria-required'] = true;
 		}
 
-		return this.renderContainer(React.DOM.textarea(objectAssign({}, this.props, ariaProps, {
-			onFocus: this.handleFocus,
-			onBlur: this.handleBlur,
-			onKeyUp: this.handleKeyUp
-		}), this.props.children));
+		return this.renderContainer(
+			React.DOM.textarea(
+				objectAssign(
+					{},
+					this.props,
+					ariaProps, {
+						onFocus: this.handleFocus,
+						onBlur: this.handleBlur,
+						onKeyUp: this.handleKeyUp
+					}
+				),
+				this.props.children
+			)
+		);
+
 	},
 
-	tryFocus: function tryFocus() {
+	tryFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
@@ -3114,7 +3167,7 @@ var Textarea = React.createClass({
 		return true;
 	},
 
-	validate: function validate() {
+	validate: function() {
 		return this.onValidate(this);
 	}
 
@@ -3133,15 +3186,15 @@ module.exports.whitespaceOptions = require('./whitespaceOptions');
 },{"./invalidValue":16,"./patternMatch":17,"./required":18,"./whitespaceOptions":19}],16:[function(require,module,exports){
 'use strict';
 
-var invalidValueValidator = function invalidValueValidator(invalidValue, message) {
+var invalidValueValidator = function(invalidValue, message) {
 	if (invalidValue === undefined) {
-		return function () {
-			return { isValid: true };
+		return function() {
+			return {isValid: true};
 		};
 	}
-	return function (component, value) {
+	return function(component, value) {
 		return {
-			isValid: value !== invalidValue,
+			isValid: (value !== invalidValue),
 			message: message
 		};
 	};
@@ -3151,13 +3204,13 @@ module.exports = invalidValueValidator;
 },{}],17:[function(require,module,exports){
 'use strict';
 
-var patternMatchValidator = function patternMatchValidator(pattern, message) {
+var patternMatchValidator = function(pattern, message) {
 	if (pattern === undefined) {
-		return function () {
-			return { isValid: true };
+		return function() {
+			return {isValid: true};
 		};
 	}
-	return function (component, value) {
+	return function(component, value) {
 		return {
 			isValid: pattern.test(value),
 			message: message
@@ -3171,8 +3224,8 @@ module.exports = patternMatchValidator;
 
 var whitespaceOptions = require('./whitespaceOptions');
 
-var requiredValidator = function requiredValidator(message, options) {
-	return function (component, value) {
+var requiredValidator = function(message, options) {
+	return function(component, value) {
 
 		var isValid;
 
@@ -3187,6 +3240,7 @@ var requiredValidator = function requiredValidator(message, options) {
 			isValid: isValid,
 			message: message
 		};
+
 	};
 };
 module.exports = requiredValidator;

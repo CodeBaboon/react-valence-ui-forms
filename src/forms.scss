@@ -1,11 +1,4 @@
 
-.field-interacted.field-invalid input,
-.field-interacted.field-invalid input[type=text],
-.field-interacted.field-invalid select,
-.field-interacted.field-invalid textarea {
-	@include vui-validation-invalid;
-};
-
 .field-bubble {
 	@include vui-validation-bubble;
 }

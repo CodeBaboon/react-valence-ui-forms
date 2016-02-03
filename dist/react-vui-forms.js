@@ -411,14 +411,12 @@ process.umask = function() { return 0; };
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
-/* global define */
 
 (function () {
 	'use strict';
 
-	var hasOwn = {}.hasOwnProperty;
-
 	function classNames () {
+
 		var classes = '';
 
 		for (var i = 0; i < arguments.length; i++) {
@@ -427,13 +425,15 @@ process.umask = function() { return 0; };
 
 			var argType = typeof arg;
 
-			if (argType === 'string' || argType === 'number') {
+			if ('string' === argType || 'number' === argType) {
 				classes += ' ' + arg;
+
 			} else if (Array.isArray(arg)) {
 				classes += ' ' + classNames.apply(null, arg);
-			} else if (argType === 'object') {
+
+			} else if ('object' === argType) {
 				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
+					if (arg.hasOwnProperty(key) && arg[key]) {
 						classes += ' ' + key;
 					}
 				}
@@ -445,14 +445,15 @@ process.umask = function() { return 0; };
 
 	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = classNames;
-	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-		// register as 'classnames', consistent with npm package name
-		define('classnames', function () {
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd){
+		// AMD. Register as an anonymous module.
+		define(function () {
 			return classNames;
 		});
 	} else {
 		window.classNames = classNames;
 	}
+
 }());
 
 },{}],5:[function(require,module,exports){

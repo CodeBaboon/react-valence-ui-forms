@@ -23,10 +23,10 @@ bower install react-vui-forms
 
 Import the style:
 
-```javascript
-@import "bower_components/react-vui-forms/forms"; // or...
+```scss
+@import "bower_components/react-vui-forms/forms.scss"; // or...
 
-@import "node_modules/react-vui-forms/forms";
+@import "node_modules/react-vui-forms/forms.scss";
 ```
 
 Require the components:

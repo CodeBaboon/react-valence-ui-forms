@@ -1,7 +1,8 @@
 .field-bubble {
   display: none;
   position: absolute;
-  width: 10rem;
+  max-width: 18.5rem;
+  width: 100%;
 }
 
 .field-bubble-content {

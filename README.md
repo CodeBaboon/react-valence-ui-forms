@@ -96,6 +96,39 @@ var MyComponent = React.createClass({
 });
 ```
 
+### Positioning Message Bubbles
+
+The default position for validation bubbles is beneath the invalid form element, except for `Forms.Select` which displays the message above so that it does not interfere with selection.  If necessary, the `validateMessagePosition` attribute can be used to explicitly indicate the message should be displayed above or below the invalid element:
+
+```javascript
+var MyComponent = React.createClass({
+    render: function() {
+        return <label>
+            Name
+            <Forms.Input type="text"
+                validateMessagePosition="above"
+                validators={ Forms.Validators.required('Name is a required') } />
+        </label>;
+    }
+});
+```
+
+Or the validation message can be anchored off of an entirely different element by specifying the `validateMessageAnchorId` attribute:
+
+```javascript
+var MyComponent = React.createClass({
+    render: function() {
+        return <label id="myInputLabel">
+            Name
+            <Forms.Input type="text"
+                validateMessagePosition="above"
+                validateMessageAnchorId="myInputLabel"
+                validators={ Forms.Validators.required('Name is a required') } />
+        </label>;
+    }
+});
+```
+
 ### Triggering Validation
 
 Validation will be done when a field loses focus, however it can be manually trigger on a component (ex. Input, Form, etc.) by calling the validate function. For example:

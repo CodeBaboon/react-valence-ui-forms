@@ -1,6 +1,6 @@
 {
   "name": "react-vui-forms",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "React component for forms inlcuding validation",
   "main": "index.js",
   "scripts": {

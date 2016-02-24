@@ -49,7 +49,7 @@ describe('input', function() {
 
 		});
 
-		pit('renders as invalid when validation returns inValid=false', function() {
+		pit('renders as invalid when validation returns isValid=false', function() {
 
 			var input = TestUtils.renderIntoDocument(
 				<Validation.Input type="text" validators={getSynchronousValidator(false,'a message')} />
@@ -63,7 +63,7 @@ describe('input', function() {
 
 		});
 
-		pit('renders as valid when validation returns inValid=true', function() {
+		pit('renders as valid when validation returns isValid=true', function() {
 
 			var input = TestUtils.renderIntoDocument(
 				<Validation.Input type="text" validators={getSynchronousValidator(true)} />

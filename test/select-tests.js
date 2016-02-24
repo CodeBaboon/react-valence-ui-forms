@@ -32,17 +32,17 @@ describe('select', function() {
 		it('renders children', function() {
 
 			var select = TestUtils.renderIntoDocument(
-				<Validation.Select><option>moose</option></Validation.Select>
+				<Validation.Select validateMessagePosition="below"><option>moose</option></Validation.Select>
 			);
 
 			expect(select.getDOMNode().firstChild.firstChild.textContent).toBe('moose');
 
 		});
 
-		pit('renders as invalid when validation returns inValid=false', function() {
+		pit('renders as invalid when validation returns isValid=false', function() {
 
 			var select = TestUtils.renderIntoDocument(
-				<Validation.Select validators={getSynchronousValidator(false,'a message')} />
+				<Validation.Select validateMessagePosition="below" validators={getSynchronousValidator(false,'a message')} />
 			);
 
 			return select.validate().then(function(result) {
@@ -53,10 +53,10 @@ describe('select', function() {
 
 		});
 
-		pit('renders as valid when validation returns inValid=true', function() {
+		pit('renders as valid when validation returns isValid=true', function() {
 
 			var select = TestUtils.renderIntoDocument(
-				<Validation.Select validators={getSynchronousValidator(true)} />
+				<Validation.Select validateMessagePosition="below" validators={getSynchronousValidator(true)} />
 			);
 
 			return select.validate().then(function(result) {

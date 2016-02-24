@@ -9,7 +9,7 @@ var Textarea = React.createClass({
 	mixins: [ValidationMixin],
 
 	defaultValidate: function() {
-		var textareaNode = this.getDOMNode().firstChild;
+		var textareaNode = this.getTextarea();
 		if (!textareaNode.checkValidity) {
 			return { isValid: true };
 		}
@@ -19,18 +19,22 @@ var Textarea = React.createClass({
 		};
 	},
 
+	getTextarea: function() {
+		return this.getDOMNode().querySelector('textarea');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getTextarea().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getTextarea());
 	},
 
 	render: function() {
@@ -58,7 +62,9 @@ var Textarea = React.createClass({
 					}
 				),
 				this.props.children
-			)
+			),
+			this.props.validateMessagePosition,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -67,7 +73,7 @@ var Textarea = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getTextarea().focus();
 		return true;
 	},
 

@@ -9,7 +9,7 @@ var Input = React.createClass({
 	mixins: [ValidationMixin],
 
 	defaultValidate: function() {
-		var inputNode = this.getDOMNode().firstChild;
+		var inputNode = this.getInput();
 		if (!inputNode.checkValidity) {
 			return { isValid: true };
 		}
@@ -19,18 +19,22 @@ var Input = React.createClass({
 		};
 	},
 
+	getInput: function() {
+		return this.getDOMNode().querySelector('input');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getInput().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getInput());
 	},
 
 	render: function() {
@@ -57,7 +61,9 @@ var Input = React.createClass({
 						onKeyUp: this.handleKeyUp
 					}
 				)
-			)
+			),
+			this.props.validateMessagePosition,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -66,7 +72,7 @@ var Input = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getInput().focus();
 		return true;
 	},
 

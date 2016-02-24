@@ -4,12 +4,13 @@
 module.exports.Bubble = require('./src/bubble');
 module.exports.Form = require('./src/form');
 module.exports.Input = require('./src/input');
+module.exports.MessagePositions = require('./src/messagePositions');
 module.exports.Mixin = require('./src/mixin');
 module.exports.Select = require('./src/select');
 module.exports.Textarea = require('./src/textarea');
 module.exports.Validators = require('./src/validators/index');
 
-},{"./src/bubble":9,"./src/form":10,"./src/input":11,"./src/mixin":12,"./src/select":13,"./src/textarea":14,"./src/validators/index":15}],2:[function(require,module,exports){
+},{"./src/bubble":9,"./src/form":10,"./src/input":11,"./src/messagePositions":12,"./src/mixin":13,"./src/select":14,"./src/textarea":15,"./src/validators/index":16}],2:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2618,9 +2619,54 @@ module.exports.ForEvent = require('./for-event');
 'use strict';
 
 var classNames = require('classnames'),
+	messagePositions = require('./messagePositions'),
 	React = require('react');
 
 var Bubble = React.createClass({
+
+	componentDidUpdate: function() {
+
+		if (!this.props.anchorId) {
+			return;
+		}
+
+		var anchor = document.getElementById(this.props.anchorId);
+		if (!anchor) {
+			return;
+		}
+
+		var anchorRect = anchor.getBoundingClientRect();
+
+		var getOffset = function(elem) {
+			var offset = { top: 0, left: 0 };
+			do { //eslint-disable-line no-cond-assign
+				if (!isNaN(elem.offsetTop)) {
+					offset.top += elem.offsetTop;
+				}
+				if (!isNaN(elem.offsetLeft)) {
+					offset.left += elem.offsetLeft;
+				}
+			} while (elem = elem.offsetParent);
+			return offset;
+		};
+
+		var offset = getOffset(anchor);
+		var bubble = React.findDOMNode(this);
+		var bubbleRect = bubble.getBoundingClientRect();
+
+		if (this.props.position !== messagePositions.ABOVE) {
+			bubble.style.top = (offset.top + anchorRect.height + 10) + 'px';
+		} else {
+			bubble.style.top = (offset.top - bubbleRect.height - 10) + 'px';
+		}
+
+		if (document.body.getAttribute('dir') !== 'rtl') {
+			bubble.style.left = offset.left + 'px';
+		} else {
+			bubble.style.left = offset.left + anchorRect.width - bubbleRect.width + 'px';
+		}
+
+	},
 
 	render: function() {
 
@@ -2633,10 +2679,13 @@ var Bubble = React.createClass({
 			})
 		};
 
+		var contentClassName = this.props.position !== 'above' ?
+			'field-bubble-content' : 'field-bubble-content-above';
+
 		return React.DOM.div(
 			bubbleProps,
 			React.DOM.span(
-				{ className: 'field-bubble-content' },
+				{ className: contentClassName },
 				this.props.message
 			)
 		);
@@ -2646,7 +2695,7 @@ var Bubble = React.createClass({
 
 module.exports = Bubble;
 
-},{"classnames":4,"react":"react"}],10:[function(require,module,exports){
+},{"./messagePositions":12,"classnames":4,"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 var objectAssign = require('object-assign'),
@@ -2711,7 +2760,7 @@ var Form = React.createClass({
 
 module.exports = Form;
 
-},{"./mixin":12,"object-assign":5,"react":"react"}],11:[function(require,module,exports){
+},{"./mixin":13,"object-assign":5,"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 var objectAssign = require('object-assign'),
@@ -2723,7 +2772,7 @@ var Input = React.createClass({
 	mixins: [ValidationMixin],
 
 	defaultValidate: function() {
-		var inputNode = this.getDOMNode().firstChild;
+		var inputNode = this.getInput();
 		if (!inputNode.checkValidity) {
 			return { isValid: true };
 		}
@@ -2733,18 +2782,22 @@ var Input = React.createClass({
 		};
 	},
 
+	getInput: function() {
+		return this.getDOMNode().querySelector('input');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getInput().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getInput());
 	},
 
 	render: function() {
@@ -2771,7 +2824,9 @@ var Input = React.createClass({
 						onKeyUp: this.handleKeyUp
 					}
 				)
-			)
+			),
+			this.props.validateMessagePosition,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -2780,7 +2835,7 @@ var Input = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getInput().focus();
 		return true;
 	},
 
@@ -2792,10 +2847,19 @@ var Input = React.createClass({
 
 module.exports = Input;
 
-},{"./mixin":12,"object-assign":5,"react":"react"}],12:[function(require,module,exports){
+},{"./mixin":13,"object-assign":5,"react":"react"}],12:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	BELOW: 'below',
+	ABOVE: 'above'
+};
+
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var classNames = require('classnames'),
+	messagePositions = require('./messagePositions'),
 	React = require('react'),
 	Emitter = require('react-frau-events'),
 	Bubble = require('./bubble'),
@@ -2898,7 +2962,7 @@ var ValidationMixin = {
 			this.hasFocus && this.hasFocus();
 	},
 
-	renderContainer: function(innerView) {
+	renderContainer: function(innerView, validateMessagePosition, validateMessageAnchorId) {
 
 		var classes = classNames({
 			'field-interacted': this.state['validation:hasInteracted'],
@@ -2908,16 +2972,21 @@ var ValidationMixin = {
 		var bubble = React.createElement(
 			Bubble,
 			{
+				anchorId: validateMessageAnchorId,
 				id: this.getValidationMessageId(),
 				key: 'bubble',
 				message: this.state['validation:message'],
-				isVisible: this.shouldDisplayMessage()
+				isVisible: this.shouldDisplayMessage(),
+				position: validateMessagePosition
 			}
 		);
 
+		var childViews = validateMessagePosition !== messagePositions.ABOVE ?
+			[ innerView, bubble ] : [ bubble, innerView ];
+
 		return React.DOM.div(
 			{ className: classes },
-			[ innerView, bubble ]
+			childViews
 		);
 
 	},
@@ -3028,10 +3097,11 @@ var ValidationMixin = {
 
 module.exports = ValidationMixin;
 
-},{"./bubble":9,"classnames":4,"q":6,"react":"react","react-frau-events":8}],13:[function(require,module,exports){
+},{"./bubble":9,"./messagePositions":12,"classnames":4,"q":6,"react":"react","react-frau-events":8}],14:[function(require,module,exports){
 'use strict';
 
 var objectAssign = require('object-assign'),
+	messagePositions = require('./messagePositions'),
 	React = require('react'),
 	ValidationMixin = require('./mixin');
 
@@ -3039,18 +3109,22 @@ var Select = React.createClass({
 
 	mixins: [ValidationMixin],
 
+	getSelect: function() {
+		return this.getDOMNode().querySelector('select');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getSelect().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getSelect());
 	},
 
 	render: function() {
@@ -3073,7 +3147,9 @@ var Select = React.createClass({
 					}
 				),
 				this.props.children
-			)
+			),
+			( this.props.validateMessagePosition ) ? this.props.validateMessagePosition : messagePositions.ABOVE,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -3082,7 +3158,7 @@ var Select = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getSelect().focus();
 		return true;
 	},
 
@@ -3094,7 +3170,7 @@ var Select = React.createClass({
 
 module.exports = Select;
 
-},{"./mixin":12,"object-assign":5,"react":"react"}],14:[function(require,module,exports){
+},{"./messagePositions":12,"./mixin":13,"object-assign":5,"react":"react"}],15:[function(require,module,exports){
 'use strict';
 
 var objectAssign = require('object-assign'),
@@ -3106,7 +3182,7 @@ var Textarea = React.createClass({
 	mixins: [ValidationMixin],
 
 	defaultValidate: function() {
-		var textareaNode = this.getDOMNode().firstChild;
+		var textareaNode = this.getTextarea();
 		if (!textareaNode.checkValidity) {
 			return { isValid: true };
 		}
@@ -3116,18 +3192,22 @@ var Textarea = React.createClass({
 		};
 	},
 
+	getTextarea: function() {
+		return this.getDOMNode().querySelector('textarea');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getTextarea().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getTextarea());
 	},
 
 	render: function() {
@@ -3155,7 +3235,9 @@ var Textarea = React.createClass({
 					}
 				),
 				this.props.children
-			)
+			),
+			this.props.validateMessagePosition,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -3164,7 +3246,7 @@ var Textarea = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getTextarea().focus();
 		return true;
 	},
 
@@ -3176,7 +3258,7 @@ var Textarea = React.createClass({
 
 module.exports = Textarea;
 
-},{"./mixin":12,"object-assign":5,"react":"react"}],15:[function(require,module,exports){
+},{"./mixin":13,"object-assign":5,"react":"react"}],16:[function(require,module,exports){
 'use strict';
 
 module.exports.invalidValue = require('./invalidValue');
@@ -3184,7 +3266,7 @@ module.exports.patternMatch = require('./patternMatch');
 module.exports.required = require('./required');
 module.exports.whitespaceOptions = require('./whitespaceOptions');
 
-},{"./invalidValue":16,"./patternMatch":17,"./required":18,"./whitespaceOptions":19}],16:[function(require,module,exports){
+},{"./invalidValue":17,"./patternMatch":18,"./required":19,"./whitespaceOptions":20}],17:[function(require,module,exports){
 'use strict';
 
 var invalidValueValidator = function(invalidValue, message) {
@@ -3202,7 +3284,7 @@ var invalidValueValidator = function(invalidValue, message) {
 };
 module.exports = invalidValueValidator;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var patternMatchValidator = function(pattern, message) {
@@ -3220,7 +3302,7 @@ var patternMatchValidator = function(pattern, message) {
 };
 module.exports = patternMatchValidator;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 var whitespaceOptions = require('./whitespaceOptions');
@@ -3246,7 +3328,7 @@ var requiredValidator = function(message, options) {
 };
 module.exports = requiredValidator;
 
-},{"./whitespaceOptions":19}],19:[function(require,module,exports){
+},{"./whitespaceOptions":20}],20:[function(require,module,exports){
 'use strict';
 
 var whitespaceOptions = {

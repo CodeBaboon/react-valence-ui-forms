@@ -21,7 +21,7 @@ var Bubble = React.createClass({
 
 		var getOffset = function(elem) {
 			var offset = { top: 0, left: 0 };
-			do { //eslint-disable-line no-cond-assign
+			do { // eslint-disable-line no-cond-assign
 				if (!isNaN(elem.offsetTop)) {
 					offset.top += elem.offsetTop;
 				}

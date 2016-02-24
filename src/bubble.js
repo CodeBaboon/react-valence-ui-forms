@@ -19,9 +19,10 @@ var Bubble = React.createClass({
 
 		var anchorRect = anchor.getBoundingClientRect();
 
+		/* eslint-disable no-cond-assign */
 		var getOffset = function(elem) {
 			var offset = { top: 0, left: 0 };
-			do { // eslint-disable-line no-cond-assign
+			do {
 				if (!isNaN(elem.offsetTop)) {
 					offset.top += elem.offsetTop;
 				}
@@ -31,6 +32,7 @@ var Bubble = React.createClass({
 			} while (elem = elem.offsetParent);
 			return offset;
 		};
+		/* eslint-enable no-cond-assign */
 
 		var offset = getOffset(anchor);
 		var bubble = React.findDOMNode(this);

@@ -98,7 +98,11 @@ var MyComponent = React.createClass({
 
 ### Positioning Message Bubbles
 
-The default position for validation bubbles is beneath the invalid form element, except for `Forms.Select` which displays the message above so that it does not interfere with selection.  If necessary, the `validateMessagePosition` attribute can be used to explicitly indicate the message should be displayed above or below the invalid element:
+The default position for validation bubbles is beneath the invalid form element, except for `Forms.Select` which displays the message above so that it does not interfere with selection.  If necessary, the position can be explicitly specified.
+
+#### Positioning Above/Below:
+
+The `validateMessagePosition` attribute can be used to indicate whether the message should be positioned above or below its target:
 
 ```javascript
 var MyComponent = React.createClass({
@@ -113,7 +117,9 @@ var MyComponent = React.createClass({
 });
 ```
 
-Or the validation message can be anchored off of an entirely different element by specifying the `validateMessageAnchorId` attribute:
+#### Positioning Elsewhere:
+
+The `validateMessageAnchorId` attribute can be used to specify a different element where the message should be displayed:
 
 ```javascript
 var MyComponent = React.createClass({

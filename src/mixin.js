@@ -1,6 +1,7 @@
 'use strict';
 
 var classNames = require('classnames'),
+	messagePositions = require('./messagePositions'),
 	React = require('react'),
 	Emitter = require('react-frau-events'),
 	Bubble = require('./bubble'),
@@ -103,7 +104,7 @@ var ValidationMixin = {
 			this.hasFocus && this.hasFocus();
 	},
 
-	renderContainer: function(innerView) {
+	renderContainer: function(innerView, validateMessagePosition, validateMessageAnchorId) {
 
 		var classes = classNames({
 			'field-interacted': this.state['validation:hasInteracted'],
@@ -113,16 +114,21 @@ var ValidationMixin = {
 		var bubble = React.createElement(
 			Bubble,
 			{
+				anchorId: validateMessageAnchorId,
 				id: this.getValidationMessageId(),
 				key: 'bubble',
 				message: this.state['validation:message'],
-				isVisible: this.shouldDisplayMessage()
+				isVisible: this.shouldDisplayMessage(),
+				position: validateMessagePosition
 			}
 		);
 
+		var childViews = validateMessagePosition !== messagePositions.ABOVE ?
+			[ innerView, bubble ] : [ bubble, innerView ];
+
 		return React.DOM.div(
 			{ className: classes },
-			[ innerView, bubble ]
+			childViews
 		);
 
 	},

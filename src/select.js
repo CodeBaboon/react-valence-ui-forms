@@ -1,6 +1,7 @@
 'use strict';
 
 var objectAssign = require('object-assign'),
+	messagePositions = require('./messagePositions'),
 	React = require('react'),
 	ValidationMixin = require('./mixin');
 
@@ -8,18 +9,22 @@ var Select = React.createClass({
 
 	mixins: [ValidationMixin],
 
+	getSelect: function() {
+		return this.getDOMNode().querySelector('select');
+	},
+
 	getValue: function() {
 		if (!this.isMounted()) {
 			return;
 		}
-		return this.getDOMNode().firstChild.value;
+		return this.getSelect().value;
 	},
 
 	hasFocus: function() {
 		if (!this.isMounted()) {
 			return false;
 		}
-		return (document.activeElement === this.getDOMNode().firstChild);
+		return (document.activeElement === this.getSelect());
 	},
 
 	render: function() {
@@ -42,7 +47,9 @@ var Select = React.createClass({
 					}
 				),
 				this.props.children
-			)
+			),
+			( this.props.validateMessagePosition ) ? this.props.validateMessagePosition : messagePositions.ABOVE,
+			this.props.validateMessageAnchorId
 		);
 
 	},
@@ -51,7 +58,7 @@ var Select = React.createClass({
 		if (!this.isMounted()) {
 			return false;
 		}
-		this.getDOMNode().firstChild.focus();
+		this.getSelect().focus();
 		return true;
 	},
 

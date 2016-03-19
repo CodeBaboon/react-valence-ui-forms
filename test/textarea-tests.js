@@ -62,7 +62,7 @@ describe('textarea', function() {
 		pit('renders as invalid when validation returns isValid=false', function() {
 
 			var textarea = TestUtils.renderIntoDocument(
-				<Validation.Textarea validators={getSynchronousValidator(false,'a message')} />
+				<Validation.Textarea validators={getSynchronousValidator(false, 'a message')} />
 			);
 
 			return textarea.validate().then(function(result) {

@@ -408,17 +408,19 @@ process.umask = function() { return 0; };
 
 },{}],4:[function(require,module,exports){
 /*!
-  Copyright (c) 2015 Jed Watson.
+  Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
+/* global define */
 
 (function () {
 	'use strict';
 
-	function classNames () {
+	var hasOwn = {}.hasOwnProperty;
 
-		var classes = '';
+	function classNames () {
+		var classes = [];
 
 		for (var i = 0; i < arguments.length; i++) {
 			var arg = arguments[i];
@@ -426,35 +428,32 @@ process.umask = function() { return 0; };
 
 			var argType = typeof arg;
 
-			if ('string' === argType || 'number' === argType) {
-				classes += ' ' + arg;
-
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
 			} else if (Array.isArray(arg)) {
-				classes += ' ' + classNames.apply(null, arg);
-
-			} else if ('object' === argType) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
 				for (var key in arg) {
-					if (arg.hasOwnProperty(key) && arg[key]) {
-						classes += ' ' + key;
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
 					}
 				}
 			}
 		}
 
-		return classes.substr(1);
+		return classes.join(' ');
 	}
 
 	if (typeof module !== 'undefined' && module.exports) {
 		module.exports = classNames;
-	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd){
-		// AMD. Register as an anonymous module.
-		define(function () {
+	} else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+		// register as 'classnames', consistent with npm package name
+		define('classnames', [], function () {
 			return classNames;
 		});
 	} else {
 		window.classNames = classNames;
 	}
-
 }());
 
 },{}],5:[function(require,module,exports){
@@ -2637,9 +2636,10 @@ var Bubble = React.createClass({
 
 		var anchorRect = anchor.getBoundingClientRect();
 
+		/* eslint-disable no-cond-assign */
 		var getOffset = function(elem) {
 			var offset = { top: 0, left: 0 };
-			do { //eslint-disable-line no-cond-assign
+			do {
 				if (!isNaN(elem.offsetTop)) {
 					offset.top += elem.offsetTop;
 				}
@@ -2649,6 +2649,7 @@ var Bubble = React.createClass({
 			} while (elem = elem.offsetParent);
 			return offset;
 		};
+		/* eslint-enable no-cond-assign */
 
 		var offset = getOffset(anchor);
 		var bubble = React.findDOMNode(this);
